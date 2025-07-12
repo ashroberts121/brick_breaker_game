@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/style.css">
     <title>Brick Breaker Game</title>
 </head>
 <body>
-    
+    <h1>Brick Breaker!</h1>
+
+    <button id="rules-btn" class="btn rules-btn">Show Rules</button>
+    <div id="rules" class="rules">
+        <h2>How to play:</h2>
+        <p>
+            Move paddle with left and right keys! &larr; &rarr;
+            Use it to bounce the ball and break the blocks! &#128526;
+        </p>
+        <p>
+            If you miss the ball, GAME OVER! &#128528;
+        </p>
+        <button id="close-btn" class="btn">Close</button>
+    </div>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script src="build/index.js"></script>
 </body>
 </html>
