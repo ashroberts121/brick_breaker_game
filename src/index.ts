@@ -19,13 +19,25 @@ const canvasHeight: number = canvas.height;
 const ball: ballType = {
     x: canvasWidth / 2,
     y: canvasHeight / 2,
-    size: 10,
+    radius: 10,
     speed: 4,
     dx: 4,
     dy: -4
 };
 
-console.log(ball);
+//Draw ball onto canvas
+function drawBall() {
+    ctx.beginPath();
+    //Set ball dimensions
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    //Set and fill in ball styles
+    ctx.fillStyle = '#21ebff';
+    ctx.fill();
+    //Close draw path
+    ctx.closePath();
+};
+
+drawBall();
 
 //Event Listeners
 rulesBtn.addEventListener('click', () => {
