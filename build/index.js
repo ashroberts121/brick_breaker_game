@@ -12,6 +12,9 @@ const canvasWidth = canvas.width; //800
 const canvasHeight = canvas.height; //600
 //Init score variable
 let score = 0;
+//Init bricks columns and rows
+const brickRows = 5;
+const brickColumns = 9;
 //Create ball properties
 const ball = {
     x: canvasWidth / 2, //400
@@ -30,6 +33,31 @@ const paddle = {
     speed: 8,
     dx: 0
 };
+//Create brick properties
+const brickProperties = {
+    w: 70,
+    h: 20,
+    padding: 10,
+    offsetX: 45,
+    offsetY: 60,
+    visible: true
+};
+//Draw bricks
+const bricks = [];
+//Create bricks within rows and columns
+for (let r = 0; r < brickRows; r++) {
+    //Create array inside bricks[] for each row
+    bricks[r] = [];
+    for (let c = 0; c < brickColumns; c++) {
+        //Set x and y values for each brick
+        const x = (c * (brickProperties.w + brickProperties.padding)) + brickProperties.offsetX;
+        const y = (r * (brickProperties.h + brickProperties.padding)) + brickProperties.offsetY;
+        //Assign axis values along with all brick object values dependent on row and column
+        bricks[r][c] = Object.assign({ x, y }, brickProperties);
+    }
+    ;
+}
+;
 //Draw ball onto canvas
 function drawBall() {
     ctx.beginPath();
@@ -51,12 +79,6 @@ function drawPaddle() {
     ctx.fill();
     ctx.closePath();
 }
-//Draw all items 
-function drawGameCanvas() {
-    drawBall();
-    drawPaddle();
-    drawScore();
-}
 ;
 //Draw score text
 function drawScore() {
@@ -68,6 +90,28 @@ function drawScore() {
         ctx.font = `20px Montserrat`;
         ctx.fillText(`Score: ${score}`, canvasWidth - 100, 30);
     });
+}
+;
+//Draw bricks on canvas
+function drawBricks() {
+    bricks.forEach((row) => {
+        row.forEach((brick) => {
+            ctx.beginPath();
+            //Create each brick and only show when visible property is set to true
+            ctx.rect(brick.x, brick.y, brick.w, brick.h);
+            ctx.fillStyle = brick.visible ? '#21ebff' : 'transparent';
+            ctx.fill();
+            ctx.closePath();
+        });
+    });
+}
+;
+//Draw all items 
+function drawGameCanvas() {
+    drawBall();
+    drawPaddle();
+    drawScore();
+    drawBricks();
 }
 ;
 drawGameCanvas();
