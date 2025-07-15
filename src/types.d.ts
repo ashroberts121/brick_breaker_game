@@ -1,2 +1,2 @@
 ///TS Types///
-export type ballType = Record<any, number>;
+export type canvasPropsType = Record<any, number>;

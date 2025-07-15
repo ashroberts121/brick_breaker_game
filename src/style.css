@@ -34,6 +34,7 @@ canvas {
     border: 1px dashed #21ebff;
     margin-top: 15px;
     max-width: 95%;
+    z-index: 1;
 }
 /*Button styling*/
 .btn {
@@ -99,25 +100,36 @@ canvas {
 }
 
 .rules {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(to top, rgba(33,235,255,0.6), rgba(0,0,0,0));
+    background-image: linear-gradient(
+        to top, rgba(28, 180, 194, 0.9) 70%, 
+                rgba(0,0,0,0) 85%, rgba(0,0,0,0) 90%, 
+                rgba(0,0,0,0) 95%, rgba(0,0,0,0) 100%
+    );
     color: #fff;
+    text-shadow: 0 0 5px #21ebff;
     min-width: 100%;
     height: 400px;
     padding: 20px;
     line-height: 1.5;
     text-align: center;
     z-index: 5;
+    opacity: 0;
     transform: translateY(400px);
-    transition: transform 1s ease-in-out;
+    transition: transform 1s ease-in-out, opacity 1s ease;
 }
 
 .rules.show {
     transform: translateY(0);
+    opacity: 1;
+}
+
+.rules h2 {
+    margin: 100px 0 0 0;
 }
