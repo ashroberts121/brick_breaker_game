@@ -26,7 +26,7 @@ const brickRows: number = 5;
 const brickColumns: number = 9; 
 
 //Create ball properties
-const ball: canvasPropsType = {
+const ballProperties: canvasPropsType = {
     x: canvasWidth / 2, //400
     y: canvasHeight / 2, //300
     radius: 10,
@@ -36,12 +36,12 @@ const ball: canvasPropsType = {
 };
 
 //Create paddle properties
-const paddle: canvasPropsType = {
+const paddleProperties: canvasPropsType = {
     x: canvasWidth / 2 - 40, //360
     y: canvasHeight - 20, //580
     w: 80,
     h: 10,
-    speed: 8,
+    speed: 4,
     dx: 0
 };
 
@@ -80,7 +80,7 @@ function drawBall() {
     ctx.beginPath();
 
     //Set ball dimensions (circle)
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.arc(ballProperties.x, ballProperties.y, ballProperties.radius, 0, Math.PI * 2);
     //Set and fill in ball styles
     ctx.fillStyle = '#21ebff';
     ctx.fill();
@@ -93,7 +93,7 @@ function drawPaddle() {
     ctx.beginPath();
     
     //Set paddle dimensions (rectangle)
-    ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
+    ctx.rect(paddleProperties.x, paddleProperties.y, paddleProperties.w, paddleProperties.h);
     //Set and fill in paddle styles
     ctx.fillStyle = '#21ebff';
     ctx.fill();
@@ -131,15 +131,65 @@ function drawBricks() {
     });
 };
 
+//Paddle movement on canvas
+function movePaddle() {
+    //Append paddle x-axis directional value onto actual x-axis value
+    paddleProperties.x += paddleProperties.dx;
+    //Detect sides of game window
+    if(paddleProperties.x + paddleProperties.w > canvas.width) {
+        //Check right wall collision
+        paddleProperties.x = canvas.width - paddleProperties.w;
+    };
+    if(paddleProperties.x < 0) {
+        //Check left wall collision
+        paddleProperties.x = 0;
+    };
+};
+
 //Draw all items 
 function drawGameCanvas() {
+    //Clear canvas
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
     drawBall();
     drawPaddle();
     drawScore();
     drawBricks();
 };
 
-drawGameCanvas();
+//Update game canvas - drawing and animations
+function updateGame() {
+    movePaddle();
+
+    //Draw all starting elements
+    drawGameCanvas();
+
+    //Call this function everytime an animation is performed
+    requestAnimationFrame(updateGame);
+};
+
+updateGame();
+
+//Keydown event
+function keyDown(e: KeyboardEvent) {
+    //Set x-axis movement speed on keydown (negative speed value for left movement)
+    if(e.key === 'Right' || e.key === 'ArrowRight') {
+        paddleProperties.dx = paddleProperties.speed;
+    } else if(e.key === 'Left' || e.key === 'ArrowLeft') {
+        paddleProperties.dx  = -paddleProperties.speed;
+    };
+};
+//Keyup event
+function keyUp(e: KeyboardEvent) {
+    if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft') {
+        paddleProperties.dx = 0;
+    };
+};
+
+//Arrow key event handlers
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
+
 
 //Event Listeners
 rulesBtn.addEventListener('click', () => {
