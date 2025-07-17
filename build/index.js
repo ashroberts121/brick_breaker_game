@@ -20,9 +20,9 @@ const ballProperties = {
     x: canvasWidth / 2, //400
     y: canvasHeight / 2, //300
     radius: 10,
-    speed: 4,
-    dx: 4,
-    dy: -4
+    speed: 1,
+    dx: 1,
+    dy: -1
 };
 //Create paddle properties
 const paddleProperties = {
@@ -123,6 +123,35 @@ function movePaddle() {
     ;
 }
 ;
+//Ball movement
+function moveBall() {
+    //Append movement values onto axis position values
+    ballProperties.x += ballProperties.dx;
+    ballProperties.y += ballProperties.dy;
+    //Wall collision
+    //Check left and right wall
+    if (ballProperties.x + ballProperties.radius > canvasWidth || ballProperties.x - ballProperties.radius < 0) {
+        //Reverse direction along x axis
+        ballProperties.dx *= -1;
+    }
+    ;
+    //Check top wall
+    if (ballProperties.y + ballProperties.radius > canvasHeight || ballProperties.y - ballProperties.radius < 0) {
+        //Reverse direction along y axis
+        ballProperties.dy *= -1;
+    }
+    ;
+    //Paddle collision
+    if (ballProperties.x - ballProperties.radius > paddleProperties.x && //Check left side of paddle
+        ballProperties.x + ballProperties.radius < paddleProperties.x + paddleProperties.w && //Check right side of paddle
+        ballProperties.y + ballProperties.radius > paddleProperties.y // Check y axis value against paddle
+    ) {
+        //Reverse ball direction on the y axis
+        ballProperties.dy = -ballProperties.speed;
+    }
+    ;
+}
+;
 //Draw all items 
 function drawGameCanvas() {
     //Clear canvas
@@ -136,6 +165,7 @@ function drawGameCanvas() {
 //Update game canvas - drawing and animations
 function updateGame() {
     movePaddle();
+    moveBall();
     //Draw all starting elements
     drawGameCanvas();
     //Call this function everytime an animation is performed
