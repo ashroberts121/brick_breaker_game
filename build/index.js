@@ -12,6 +12,8 @@ const canvasWidth = canvas.width; //800
 const canvasHeight = canvas.height; //600
 //Init score variable
 let score = 0;
+//Init high score variable
+let highScore = localStorage.getItem("highScore") === null ? 0 : JSON.parse(localStorage.getItem("highScore") || "''");
 //Init bricks columns and rows
 const brickRows = 5;
 const brickColumns = 9;
@@ -78,6 +80,18 @@ function drawPaddle() {
     ctx.fillStyle = '#21ebff';
     ctx.fill();
     ctx.closePath();
+}
+;
+//Draw high score text
+function drawHighScore() {
+    //load custom font to use for the score counter
+    customFont.load().then((f) => {
+        //Add to fonts list
+        document.fonts.add(f);
+        //Set text properties and positioning
+        ctx.font = `20px Montserrat`;
+        ctx.fillText(`Highscore: ${highScore}`, 60, 30);
+    });
 }
 ;
 //Draw score text
@@ -171,6 +185,12 @@ function moveBall() {
     //Game over on hitting bottom wall
     if (ballProperties.y + ballProperties.radius > canvasHeight) {
         resetBricks();
+        if (score > highScore) {
+            localStorage.setItem("highScore", score.toString());
+            highScore = score;
+            drawHighScore();
+        }
+        ;
         score = 0;
     }
     ;
@@ -199,6 +219,7 @@ function resetBricks() {
 function drawGameCanvas() {
     //Clear canvas
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    drawHighScore();
     drawScore();
     drawBricks();
     drawBall();
