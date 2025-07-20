@@ -142,14 +142,30 @@ function moveBall() {
     }
     ;
     //Paddle collision
-    if (ballProperties.x - ballProperties.radius > paddleProperties.x && //Check left side of paddle
-        ballProperties.x + ballProperties.radius < paddleProperties.x + paddleProperties.w && //Check right side of paddle
+    if (ballProperties.x + ballProperties.radius > paddleProperties.x && //Check left side of paddle
+        ballProperties.x - ballProperties.radius < paddleProperties.x + paddleProperties.w && //Check right side of paddle
         ballProperties.y + ballProperties.radius > paddleProperties.y // Check y axis value against paddle
     ) {
         //Reverse ball direction on the y axis
         ballProperties.dy = -ballProperties.speed;
     }
     ;
+    //Brick collision
+    bricks.forEach(column => {
+        column.forEach((brick) => {
+            if (brick.visible) {
+                if (ballProperties.x - ballProperties.radius > brick.x && //Check left side of brick
+                    ballProperties.x + ballProperties.radius < brick.x + brick.w && //Check right side of brick
+                    ballProperties.y + ballProperties.radius > brick.y && //Check top of brick
+                    ballProperties.y - ballProperties.radius < brick.y + brick.h //Check bottom of brick
+                ) {
+                    ballProperties.dy *= -1; //Reverse direction ball is travelling on collision
+                    brick.visible = false; //Set visibility to false so bricks disappear on contact
+                    score++; //Increase score when brick is hit
+                }
+            }
+        });
+    });
 }
 ;
 //Draw all items 
