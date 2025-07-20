@@ -155,15 +155,42 @@ function moveBall() {
         column.forEach((brick) => {
             if (brick.visible) {
                 if (ballProperties.x - ballProperties.radius > brick.x && //Check left side of brick
-                    ballProperties.x + ballProperties.radius < brick.x + brick.w && //Check right side of brick
+                    ballProperties.x + ballProperties.radius < brick.x + brickProperties.w && //Check right side of brick
                     ballProperties.y + ballProperties.radius > brick.y && //Check top of brick
-                    ballProperties.y - ballProperties.radius < brick.y + brick.h //Check bottom of brick
+                    ballProperties.y - ballProperties.radius < brick.y + brickProperties.h //Check bottom of brick
                 ) {
                     ballProperties.dy *= -1; //Reverse direction ball is travelling on collision
                     brick.visible = false; //Set visibility to false so bricks disappear on contact
-                    score++; //Increase score when brick is hit
+                    addToScore();
                 }
+                ;
             }
+            ;
+        });
+    });
+    //Game over on hitting bottom wall
+    if (ballProperties.y + ballProperties.radius > canvasHeight) {
+        resetBricks();
+        score = 0;
+    }
+    ;
+}
+;
+//Increase score
+function addToScore() {
+    score++;
+    //If no bricks are left redraw them all
+    if (score % (brickRows * brickColumns) === 0) {
+        resetBricks();
+    }
+    ;
+}
+;
+//Reset all bricks on screen
+function resetBricks() {
+    bricks.forEach(column => {
+        column.forEach((brick) => {
+            brick.visible = true;
         });
     });
 }
@@ -172,10 +199,10 @@ function moveBall() {
 function drawGameCanvas() {
     //Clear canvas
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    drawBall();
-    drawPaddle();
     drawScore();
     drawBricks();
+    drawBall();
+    drawPaddle();
 }
 ;
 //Update game canvas - drawing and animations
