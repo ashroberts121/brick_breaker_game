@@ -9,9 +9,10 @@ const redTheme = document.getElementById('red-theme');
 const yellowTheme = document.getElementById('yellow-theme');
 const greenTheme = document.getElementById('green-theme');
 const blueTheme = document.getElementById('blue-theme');
+const pinkTheme = document.getElementById('pink-theme');
+//Assign HTML root element for css variables + extract properties to be able to change
 const cssRoot = document.querySelector(':root');
 const cssRootProperties = getComputedStyle(cssRoot);
-console.log(cssRootProperties);
 //Get canvas element and add "2D" rendering context
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -292,6 +293,11 @@ function changeTheme(color) {
             themeColour = '#21ebff';
             cssRoot.style.setProperty('--theme', '#21ebff');
             cssRoot.style.setProperty('--theme-shadow-base', 'rgba(28, 180, 194, 0.9) 70%');
+            break;
+        case 'pink':
+            themeColour = '#fd2efd';
+            cssRoot.style.setProperty('--theme', '#fd2efd');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(226, 75, 231, 0.9) 70%');
     }
     ;
 }
@@ -310,4 +316,5 @@ redTheme.addEventListener('click', () => changeTheme('red'));
 yellowTheme.addEventListener('click', () => changeTheme('yellow'));
 greenTheme.addEventListener('click', () => changeTheme('green'));
 blueTheme.addEventListener('click', () => changeTheme('blue'));
+pinkTheme.addEventListener('click', () => changeTheme('pink'));
 export {};
