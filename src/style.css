@@ -1,7 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap&family=Megrim&family=Pompiere&display=swap');
 
 *{
-    box-sizing: border-box;
+    box-sizing: border-box;   
+
+}
+
+:root {
+    /*
+        (blue)
+        ##21ebff
+        rgba(28, 180, 194, 0.9) 70%; 
+
+        (red)
+        #ff0000
+        rgba(194, 24, 24, 0.9) 70% 
+
+        (green)
+        #5dff1c
+        rgba(38, 245, 31, 0.9) 70%
+
+        (yellow)
+        #fffc2f
+        rgba(234, 255, 48, 0.9) 70%
+
+    */
+    --theme: #21ebff;
+    --theme-shadow-base:rgba(28, 180, 194, 0.9) 70%; 
+   
 }
 
 body {
@@ -20,18 +45,43 @@ h1 {
     font-size: 55px;
     color: #fff;
     text-shadow: 
-        0 0 5px #0bf4f3,
-        0 0 10px #0bf4f3,
-        0 0 20px #0bf4f3,
-        0 0 40px #0bf4f3,
-        0 0 80px #0bf4f3;
+        0 0 5px var(--theme),
+        0 0 10px var(--theme),
+        0 0 20px var(--theme),
+        0 0 40px var(--theme),
+        0 0 80px var(--theme);
 }
+
+.theme-btn-container {
+    position: absolute;
+    top: 175px;
+    left: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20px;
+    margin: 0 0 20px 0;
+}
+
+.theme-btn {
+    background-color: #fff;
+    margin: 0 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.blue-theme { background-color: #21ebff; }
+.yellow-theme { background-color: #fffc2f; }
+.red-theme { background-color: #ff0000; }
+.green-theme { background-color: #5dff1c; }
 
 canvas {
     background-color: #303030;
     display: block;
     border-radius: 5px;
-    border: 1px dashed #21ebff;
+    border: 1px dashed var(--theme);
     margin-top: 15px;
     max-width: 95%;
     z-index: 1;
@@ -43,7 +93,7 @@ canvas {
     padding: 10px 20px;
     background: transparent;
     color: #c8f9ff;
-    text-shadow: 0 0 5px #21ebff;
+    text-shadow: 0 0 5px var(--theme);
     position: relative;
     display: inline-block;
     font-size: 14px;
@@ -59,8 +109,8 @@ canvas {
     content: "";
     right: 0;
     bottom: 0;
-    background: #21ebff;
-    box-shadow: 0 0 5px #21ebff;
+    background: var(--theme);
+    box-shadow: 0 0 5px var(--theme);
     transition: all 0.3s ease;
 }
 .btn:before{height: 50%; width: 2px;}
@@ -82,7 +132,7 @@ canvas {
     content: "";
     left: 0;
     top: 0;
-    background: #21ebff;
+    background: var(--theme);
     box-shadow: 0 0 5px ;
     transition: all 0.3s ease;
 }
@@ -108,12 +158,12 @@ canvas {
     justify-content: center;
     align-items: center;
     background-image: linear-gradient(
-        to top, rgba(28, 180, 194, 0.9) 70%, 
+        to top, var(--theme-shadow-base), 
                 rgba(0,0,0,0) 85%, rgba(0,0,0,0) 90%, 
                 rgba(0,0,0,0) 95%, rgba(0,0,0,0) 100%
     );
     color: #fff;
-    text-shadow: 0 0 5px #21ebff;
+    text-shadow: 0 0 5px var(--theme);
     min-width: 100%;
     height: 400px;
     padding: 20px;

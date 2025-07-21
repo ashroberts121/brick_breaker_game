@@ -1,18 +1,28 @@
 /** @type {HTMLCanvasElement} */
 //Create new font face from google fonts to be used directly in canvas
 const customFont = new FontFace('Montserrat', 'url(../brick_breaker/resources/Montserrat/Montserrat-VariableFont_wght.ttf)');
+//Fetch DOM elements
 const rulesBtn = document.getElementById('rules-btn');
 const closeBtn = document.getElementById('close-btn');
 const rules = document.getElementById('rules');
+const redTheme = document.getElementById('red-theme');
+const yellowTheme = document.getElementById('yellow-theme');
+const greenTheme = document.getElementById('green-theme');
+const blueTheme = document.getElementById('blue-theme');
+const cssRoot = document.querySelector(':root');
+const cssRootProperties = getComputedStyle(cssRoot);
+console.log(cssRootProperties);
 //Get canvas element and add "2D" rendering context
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 //Init canvas height and width values
 const canvasWidth = canvas.width; //800
 const canvasHeight = canvas.height; //600
+//Theme colour
+let themeColour = '#21ebff';
 //Init score variable
 let score = 0;
-//Init high score variable
+//Init high score variable (Set to 0 if no stored highscore is available in local storage)
 let highScore = localStorage.getItem("highScore") === null ? 0 : JSON.parse(localStorage.getItem("highScore") || "''");
 //Init bricks columns and rows
 const brickRows = 5;
@@ -66,7 +76,7 @@ function drawBall() {
     //Set ball dimensions (circle)
     ctx.arc(ballProperties.x, ballProperties.y, ballProperties.radius, 0, Math.PI * 2);
     //Set and fill in ball styles
-    ctx.fillStyle = '#21ebff';
+    ctx.fillStyle = themeColour;
     ctx.fill();
     ctx.closePath();
 }
@@ -77,7 +87,7 @@ function drawPaddle() {
     //Set paddle dimensions (rectangle)
     ctx.rect(paddleProperties.x, paddleProperties.y, paddleProperties.w, paddleProperties.h);
     //Set and fill in paddle styles
-    ctx.fillStyle = '#21ebff';
+    ctx.fillStyle = themeColour;
     ctx.fill();
     ctx.closePath();
 }
@@ -113,7 +123,7 @@ function drawBricks() {
             ctx.beginPath();
             //Create each brick and only show when visible property is set to true
             ctx.rect(brick.x, brick.y, brick.w, brick.h);
-            ctx.fillStyle = brick.visible ? '#21ebff' : 'transparent';
+            ctx.fillStyle = brick.visible ? themeColour : 'transparent';
             ctx.fill();
             ctx.closePath();
         });
@@ -185,6 +195,7 @@ function moveBall() {
     //Game over on hitting bottom wall
     if (ballProperties.y + ballProperties.radius > canvasHeight) {
         resetBricks();
+        //Update highscore locally and in localstorage, and redraw it on screen
         if (score > highScore) {
             localStorage.setItem("highScore", score.toString());
             highScore = score;
@@ -257,6 +268,34 @@ function keyUp(e) {
     ;
 }
 ;
+//Change theme colours
+function changeTheme(color) {
+    let theme = color;
+    //themeColour changes canvas colours, root styles change the rest of page
+    switch (theme) {
+        case 'red':
+            themeColour = '#ff0000';
+            cssRoot.style.setProperty('--theme', '#ff0000');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(194, 24, 24, 0.9) 70%');
+            break;
+        case 'yellow':
+            themeColour = '#fffc2f';
+            cssRoot.style.setProperty('--theme', '#fffc2f');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(215, 226, 117, 0.9) 70%');
+            break;
+        case 'green':
+            themeColour = '#5dff1c';
+            cssRoot.style.setProperty('--theme', '#5dff1c');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(38, 245, 31, 0.9) 70%');
+            break;
+        case 'blue':
+            themeColour = '#21ebff';
+            cssRoot.style.setProperty('--theme', '#21ebff');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(28, 180, 194, 0.9) 70%');
+    }
+    ;
+}
+;
 //Arrow key event handlers
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
@@ -267,4 +306,8 @@ rulesBtn.addEventListener('click', () => {
 closeBtn.addEventListener('click', () => {
     rules.classList.remove('show');
 });
+redTheme.addEventListener('click', () => changeTheme('red'));
+yellowTheme.addEventListener('click', () => changeTheme('yellow'));
+greenTheme.addEventListener('click', () => changeTheme('green'));
+blueTheme.addEventListener('click', () => changeTheme('blue'));
 export {};

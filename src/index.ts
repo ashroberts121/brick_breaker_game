@@ -6,9 +6,18 @@ import type { canvasPropsType } from "./types";
 //Create new font face from google fonts to be used directly in canvas
 const customFont: FontFace = new FontFace('Montserrat', 'url(../brick_breaker/resources/Montserrat/Montserrat-VariableFont_wght.ttf)');
 
+//Fetch DOM elements
 const rulesBtn = document.getElementById('rules-btn') as HTMLButtonElement;
 const closeBtn = document.getElementById('close-btn') as HTMLButtonElement;
 const rules = document.getElementById('rules') as HTMLDivElement;
+const redTheme = document.getElementById('red-theme') as HTMLButtonElement;
+const yellowTheme = document.getElementById('yellow-theme') as HTMLButtonElement;
+const greenTheme = document.getElementById('green-theme') as HTMLButtonElement;
+const blueTheme = document.getElementById('blue-theme') as HTMLButtonElement;
+
+const cssRoot = document.querySelector(':root') as HTMLElement;
+const cssRootProperties: CSSStyleDeclaration = getComputedStyle(cssRoot);
+console.log(cssRootProperties);
 
 //Get canvas element and add "2D" rendering context
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -17,6 +26,9 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 //Init canvas height and width values
 const canvasWidth: number = canvas.width; //800
 const canvasHeight: number = canvas.height; //600
+
+//Theme colour
+let themeColour: string = '#21ebff';
 
 //Init score variable
 let score: number = 0;
@@ -86,7 +98,7 @@ function drawBall() {
     //Set ball dimensions (circle)
     ctx.arc(ballProperties.x, ballProperties.y, ballProperties.radius, 0, Math.PI * 2);
     //Set and fill in ball styles
-    ctx.fillStyle = '#21ebff';
+    ctx.fillStyle = themeColour;
     ctx.fill();
     
     ctx.closePath();
@@ -99,7 +111,7 @@ function drawPaddle() {
     //Set paddle dimensions (rectangle)
     ctx.rect(paddleProperties.x, paddleProperties.y, paddleProperties.w, paddleProperties.h);
     //Set and fill in paddle styles
-    ctx.fillStyle = '#21ebff';
+    ctx.fillStyle = themeColour;
     ctx.fill();
 
     ctx.closePath();
@@ -140,7 +152,7 @@ function drawBricks() {
 
             //Create each brick and only show when visible property is set to true
             ctx.rect(brick.x, brick.y, brick.w, brick.h);
-            ctx.fillStyle = brick.visible ? '#21ebff' : 'transparent';
+            ctx.fillStyle = brick.visible ? themeColour : 'transparent';
             ctx.fill();
 
             ctx.closePath();
@@ -282,6 +294,33 @@ function keyUp(e: KeyboardEvent) {
     };
 };
 
+//Change theme colours
+function changeTheme(color: string) {
+    let theme: string = color;
+    //themeColour changes canvas colours, root styles change the rest of page
+    switch(theme) {
+        case 'red':
+            themeColour = '#ff0000';
+            cssRoot.style.setProperty('--theme', '#ff0000');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(194, 24, 24, 0.9) 70%');
+            break;
+        case 'yellow':
+            themeColour = '#fffc2f';
+            cssRoot.style.setProperty('--theme', '#fffc2f');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(215, 226, 117, 0.9) 70%');
+            break;
+        case 'green':
+            themeColour = '#5dff1c';
+            cssRoot.style.setProperty('--theme', '#5dff1c');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(38, 245, 31, 0.9) 70%');
+            break;
+        case 'blue':
+            themeColour = '#21ebff';
+            cssRoot.style.setProperty('--theme', '#21ebff');
+            cssRoot.style.setProperty('--theme-shadow-base', 'rgba(28, 180, 194, 0.9) 70%');
+    };
+};
+
 //Arrow key event handlers
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
@@ -294,3 +333,8 @@ rulesBtn.addEventListener('click', () => {
 closeBtn.addEventListener('click', () => {
     rules.classList.remove('show');
 });
+
+redTheme.addEventListener('click', () => changeTheme('red'));
+yellowTheme.addEventListener('click', () => changeTheme('yellow'));
+greenTheme.addEventListener('click', () => changeTheme('green'));
+blueTheme.addEventListener('click', () => changeTheme('blue'));
